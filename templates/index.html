@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080D17">
+  <meta name="description" content="A stack-based expression converter and evaluator built with Python and Flask.">
+  <title>Expression Lab — Stack-Based Expression Evaluator &amp; Converter</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="site-header">
+      <div class="brand-mark" aria-hidden="true"><span>∑</span></div>
+      <div class="brand-copy">
+        <p class="eyebrow">DATA STRUCTURES · PYTHON</p>
+        <h1>Expression <span>Lab</span></h1>
+        <p class="subtitle">Stack-Based Expression Evaluator &amp; Converter</p>
+      </div>
+      <div class="status-pill"><span class="status-dot"></span> Ready to compute</div>
+    </header>
+
+    <section class="intro panel">
+      <div>
+        <p class="eyebrow">YOUR EXPRESSION WORKBENCH</p>
+        <h2>Make every operator count.</h2>
+        <p class="intro-copy">Convert between infix, postfix, and prefix notation, or evaluate an expression using stack-based algorithms.</p>
+      </div>
+      <div class="notation-chips" aria-label="Supported notations"><span>INFIX</span><span>POSTFIX</span><span>PREFIX</span></div>
+    </section>
+
+    <section class="workspace">
+      <div class="panel input-panel">
+        <div class="section-heading"><div><p class="eyebrow">STEP 01</p><h2>Enter expression</h2></div><span class="mini-icon" aria-hidden="true">⌘</span></div>
+        <label for="expression">Expression</label>
+        <textarea id="expression" maxlength="500" rows="3" spellcheck="false" autocomplete="off" placeholder="e.g. 3 + 4 * 2" aria-describedby="input-help">3 + 4 * 2</textarea>
+        <div class="input-meta"><p id="input-help">Use numbers, + − × ÷ ^ and brackets. Unary signs are not supported.</p><span id="char-count">9 / 500</span></div>
+        <div class="example-row"><label for="examples">Try an example</label><select id="examples"><option value="">Choose sample…</option><option value="3 + 4 * 2">Precedence: 3 + 4 * 2</option><option value="(3 + 4) * 2">Brackets: (3 + 4) * 2</option><option value="2 ^ 3 ^ 2">Right-associative power</option><option value="12.5 / 2.5 + 3">Decimals: 12.5 / 2.5 + 3</option></select></div>
+        <div class="button-row"><button class="button button-quiet" id="clear-btn" type="button">Clear</button><span class="shortcut-note">Select an operation to run</span></div>
+      </div>
+
+      <div class="panel operations-panel">
+        <div class="section-heading"><div><p class="eyebrow">STEP 02</p><h2>Choose operation</h2></div><span class="operation-count">08 OPERATIONS</span></div>
+        <div class="operation-group"><h3>Convert notation</h3><div class="operation-grid">
+          <button class="operation-btn" data-operation="infix_to_postfix"><span class="op-arrow">→</span><span><strong>Infix <i>to</i> Postfix</strong><small>Operator stack</small></span></button>
+          <button class="operation-btn" data-operation="infix_to_prefix"><span class="op-arrow">→</span><span><strong>Infix <i>to</i> Prefix</strong><small>Operator precedence</small></span></button>
+          <button class="operation-btn" data-operation="postfix_to_infix"><span class="op-arrow">→</span><span><strong>Postfix <i>to</i> Infix</strong><small>Expression structure</small></span></button>
+          <button class="operation-btn" data-operation="postfix_to_prefix"><span class="op-arrow">→</span><span><strong>Postfix <i>to</i> Prefix</strong><small>Stack-based conversion</small></span></button>
+          <button class="operation-btn" data-operation="prefix_to_infix"><span class="op-arrow">→</span><span><strong>Prefix <i>to</i> Infix</strong><small>Expression structure</small></span></button>
+          <button class="operation-btn" data-operation="prefix_to_postfix"><span class="op-arrow">→</span><span><strong>Prefix <i>to</i> Postfix</strong><small>Stack-based conversion</small></span></button>
+        </div></div>
+        <div class="operation-group eval-group"><h3>Evaluate expression</h3><div class="operation-grid eval-grid">
+          <button class="operation-btn" data-operation="evaluate_postfix"><span class="op-arrow">ƒ</span><span><strong>Evaluate Postfix</strong><small>Calculate a postfix expression</small></span></button>
+          <button class="operation-btn" data-operation="evaluate_prefix"><span class="op-arrow">ƒ</span><span><strong>Evaluate Prefix</strong><small>Calculate a prefix expression</small></span></button>
+        </div></div>
+      </div>
+    </section>
+
+    <section class="panel result-panel" aria-live="polite" aria-atomic="true">
+      <div class="result-heading"><div class="section-heading"><div><p class="eyebrow">STEP 03</p><h2>Result</h2></div></div><span id="result-status" class="result-status">WAITING FOR INPUT</span></div>
+      <div id="result-box" class="result-box empty"><span class="result-symbol" aria-hidden="true">↳</span><div><p id="result-label">Your result will appear here</p><p id="result-value">Enter an expression and choose an operation above.</p></div></div>
+      <div class="result-footer"><p id="result-operation">No operation selected</p><button class="button button-copy" id="copy-btn" type="button" disabled><span aria-hidden="true">▢</span> Copy result</button></div>
+    </section>
+
+    <details class="panel learn-panel">
+      <summary><span><span class="eyebrow">LEARN THE LOGIC</span><strong>How it works</strong></span><span class="summary-plus" aria-hidden="true">+</span></summary>
+      <div class="learn-content">
+        <article><h3>01 · LIFO</h3><p>A stack follows Last In, First Out. The most recently pushed item is the first one removed. This makes stacks useful for operators and operands.</p></article>
+        <article><h3>02 · Precedence</h3><p>Exponentiation has the highest precedence, then multiplication and division, then addition and subtraction. The exponent operator is right-associative.</p></article>
+        <article><h3>03 · Three notations</h3><p><b>Infix</b> places operators between operands (<code>3 + 4</code>). <b>Postfix</b> puts them after (<code>3 4 +</code>). <b>Prefix</b> puts them before (<code>+ 3 4</code>).</p></article>
+        <article><h3>04 · Complexity</h3><p>For <i>n</i> tokens, parsing, conversion and evaluation take O(n) time and O(n) auxiliary space, excluding the cost of very large-number arithmetic.</p></article>
+      </div>
+      <p class="grammar-note"><b>Grammar note:</b> Operands are unsigned integer or decimal numbers. Unary plus/minus are intentionally rejected. Infix supports <code>()</code> and <code>[]</code>; prefix and postfix inputs are whitespace-separated tokens.</p>
+    </details>
+
+    <footer><span>Built with Python · Flask · Custom Stack</span><span>Academic DSA Project <b>•</b> No expression is stored</span></footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
